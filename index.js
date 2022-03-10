@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 
-const uri = 'mongodb+srv://jesusbenagal:k0bayashi@cluster0.ocnap.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+
 
 
 
