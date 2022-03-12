@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 
+const uri = 'mongodb+srv://jesusbenagal:k0bayashi@cluster0.ocnap.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -95,18 +97,20 @@ app.get('/user', async(req, res) => {
     }
 })
 
-
-
-app.get('/users', async(req, res) => {
+app.get('/gendered-users', async(req, res) => {
     const client = new MongoClient(uri)
+    const gender = req.query.gender
+
+    console.log(gender)
 
     try {
         await client.connect()
         const database = client.db('app-data')
         const users = database.collection('users')
+        const query = { gender_identity: { $eq: 'man' } }
+        const foundUsers = await users.find(query).toArray()
 
-        const returnedUsers = await users.find().toArray()
-        res.send(returnedUsers)
+        res.send(foundUsers)
     } finally {
         await client.close()
     }
