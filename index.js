@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 
-
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -77,6 +76,26 @@ app.post('/login', async (req, res) =>{
         console.log(err)
     }
 })
+
+
+app.get('/user', async(req, res) => {
+    const client = new MongoClient(uri)
+    const userId = req.query.userId
+
+    try {
+        await client.connect()
+        const database = client.db('app-data')
+        const users = database.collection('users')
+
+        const query = { user_id: userId }
+        const user = await users.findOne(query)
+        res.send(user)
+    } finally {
+        await client.close()
+    }
+})
+
+
 
 app.get('/users', async(req, res) => {
     const client = new MongoClient(uri)
